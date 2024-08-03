@@ -1,40 +1,22 @@
-# Build Stage
 FROM node:18 AS build
-
-# Set the working directory in the container
-WORKDIR /app
-
-# Install dependencies
-COPY package.json yarn.lock ./
-RUN yarn install
-
-# Copy the rest of the application code
+WORKDIR /usr/src/app
+COPY package.json .
+COPY package-lock.json .
+RUN npm install
 COPY . .
+RUN npx prisma generate
+RUN npm run build
 
-# Run Prisma migrations and generate the client
-# RUN npx prisma generate
+FROM node:18-slim
+RUN apt update && apt install libssl-dev dumb-init -y --no-install-recommends
+WORKDIR /usr/src/app
+COPY --chown=node:node --from=build /usr/src/app/dist ./dist
+COPY --chown=node:node --from=build /usr/src/app/.env.docker .env
+COPY --chown=node:node --from=build /usr/src/app/package.json .
+COPY --chown=node:node --from=build /usr/src/app/package-lock.json .
 
-# Build the application
-RUN yarn build
+RUN npm install --omit=dev
+COPY --chown=node:node --from=build /usr/src/app/node_modules/.prisma/client  ./node_modules/.prisma/client
 
-# Production Stage
-FROM node:18
-
-# Set the working directory in the container
-WORKDIR /app
-
-# Copy the build artifacts and Prisma client from the build stage
-COPY --from=build /app/dist ./dist
-COPY --from=build /app/node_modules ./node_modules/
-#COPY --from=build /app/prisma ./prisma
-#COPY --from=build /app/.env.docker .env
-
-# Install production dependencies
-COPY package.json yarn.lock ./
-#RUN yarn install --production
-
-# Expose the port the app will run on
 EXPOSE 3005
-
-# Command to run the application
-CMD ["sh", "-c", "npx prisma migrate deploy && node dist/main"]
+CMD ["dumb-init", "node", "dist/main"]
