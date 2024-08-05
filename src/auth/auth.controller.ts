@@ -12,7 +12,6 @@ export class AuthController {
     @Req() req: Request,
     @Res() res: Response
   ) {
-    console.log(credential, 'cred')
     const user = await this.authService.verifyGoogleToken(credential);
 
     if (user) {

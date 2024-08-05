@@ -1,6 +1,7 @@
 import {
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
 } from 'class-validator';
 
@@ -18,4 +19,8 @@ export class GetCardsDto {
   
   @IsString()
   expansion: string;
+
+  @IsOptional()
+  @IsString()
+  cardId: string | null;
 }
