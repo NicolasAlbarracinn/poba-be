@@ -14,7 +14,7 @@ export class AuthService {
       audience: process.env.GOOGLE_CLIENT_ID,
     });
     const payload = ticket.getPayload();
-    const user = this.validateUser(payload.email)
+    const user = this.validateUser(payload.email);
     return user;
   }
   async validateUser(email) {

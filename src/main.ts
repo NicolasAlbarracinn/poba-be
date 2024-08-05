@@ -12,16 +12,18 @@ async function bootstrap() {
   const config = app.get(ConfigService);
 
   // Configure session middleware
-  app.use(session({
-    secret: config.get('SECRET'), 
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      secure: false,
-      httpOnly: true,
-      // maxAge: 3600000,
-    },
-  }));
+  app.use(
+    session({
+      secret: config.get('SECRET'),
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        secure: false,
+        httpOnly: true,
+        // maxAge: 3600000,
+      },
+    }),
+  );
 
   app.use(passport.initialize());
   app.use(passport.session());

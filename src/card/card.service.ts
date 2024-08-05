@@ -66,9 +66,9 @@ export class CardService {
       weak: dto.weak,
       userId: userId,
     };
-    console.log(data);
+
     try {
-      const card = await this.prisma.card.create({data});
+      const card = await this.prisma.card.create({ data });
 
       return card;
     } catch (error) {
@@ -91,7 +91,6 @@ export class CardService {
   }
 
   async updateCard(dto: UpdateCardDto, userId: string) {
-    console.log(dto);
     try {
       const updatedCard = await this.prisma.card.update({
         where: { id: dto.id },

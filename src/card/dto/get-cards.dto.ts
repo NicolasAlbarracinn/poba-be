@@ -1,9 +1,4 @@
-import {
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class GetCardsDto {
   @IsNumber()
@@ -16,7 +11,7 @@ export class GetCardsDto {
 
   @IsString()
   type: string;
-  
+
   @IsString()
   expansion: string;
 

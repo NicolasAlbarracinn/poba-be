@@ -10,7 +10,7 @@ export class AuthController {
   async handleLogin(
     @Query('credential') credential: string,
     @Req() req: Request,
-    @Res() res: Response
+    @Res() res: Response,
   ) {
     const user = await this.authService.verifyGoogleToken(credential);
 
@@ -22,5 +22,16 @@ export class AuthController {
     } else {
       return res.status(401).json({ message: 'Authentication failed' });
     }
+  }
+  @Get('logout')
+  async logout(@Req() req: Request, @Res() res: Response) {
+    req.session.destroy((err) => {
+      if (err) {
+        return res.status(500).send('Failed to log out.');
+      }
+      res.clearCookie('connect.sid');
+      res.clearCookie('sessionId');
+      return res.status(200).send('Logged out successfully.');
+    });
   }
 }

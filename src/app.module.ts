@@ -11,9 +11,9 @@ import { PassportModule } from '@nestjs/passport';
     ConfigModule.forRoot({ isGlobal: true }),
     AuthModule,
     PrismaModule,
-    PassportModule.register({ session: true}),
+    PassportModule.register({ session: true }),
     CardModule,
-    CardBattleModule
+    CardBattleModule,
   ],
 })
 export class AppModule {}

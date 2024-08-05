@@ -7,14 +7,15 @@ async function main() {
       cardCode: 'SM104',
       expansion: 'Sun & Moon Promos',
       name: 'Solgaleo-GX',
-      image: 'https://limitlesstcg.nyc3.digitaloceanspaces.com/tpci/SMP/SMP_104_R_EN_LG.png',
+      image:
+        'https://limitlesstcg.nyc3.digitaloceanspaces.com/tpci/SMP/SMP_104_R_EN_LG.png',
       hp: 250,
       attack: 120,
       type: 'Metal',
       resist: 'Psychic',
       weak: 'Fire',
       userId: '63b982e3-be3c-4dc5-b4d0-fae44ea13b9d',
-    }
+    },
   });
   console.log('Card added:', card);
 }
@@ -28,7 +29,7 @@ main()
     await prisma.$disconnect();
   });
 
-  /*const puppeteer = require('puppeteer');
+/*const puppeteer = require('puppeteer');
 
 async function getCardData(url) {
   const browser = await puppeteer.launch();

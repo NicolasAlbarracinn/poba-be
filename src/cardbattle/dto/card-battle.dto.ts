@@ -1,11 +1,11 @@
-import { IsInt, IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CardBattleDto {
-  @IsInt()
+  @IsString()
   @IsNotEmpty()
   cardChosenId: string;
 
-  @IsInt()
+  @IsString()
   @IsNotEmpty()
   cardAgainstId: string;
 }

@@ -6,7 +6,7 @@ import { CardBattleDto } from './dto/card-battle.dto';
 export class CardBattleService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async initiateBattle(dto: CardBattleDto, userId: string) {
+  async createBattle(dto: CardBattleDto, userId: string) {
     const { cardChosenId, cardAgainstId } = dto;
 
     const [chosenCard, againstCard] = await this.prisma.$transaction([
@@ -20,7 +20,6 @@ export class CardBattleService {
 
     const result = this.calculateBattleResult(chosenCard, againstCard);
 
-    // Save the battle result
     const battle = await this.prisma.cardBattle.create({
       data: {
         cardChosenId,
@@ -34,16 +33,18 @@ export class CardBattleService {
   }
 
   private calculateBattleResult(chosenCard: any, againstCard: any): boolean {
-    // Simple example: Attack vs. HP
-    let result = chosenCard.attack > againstCard.hp;
-
-    // Check for weaknesses and resistances
-    if (chosenCard.weak === againstCard.type) {
-      result = false; // Chosen card is weak against the opponent's type
-    } else if (chosenCard.resist === againstCard.type) {
-      result = true; // Chosen card is resistant to the opponent's type
+    let chosenAttack = chosenCard.attack
+    if (chosenCard.type === againstCard.weak) {
+      chosenAttack = chosenAttack * 2
+    }
+    if (chosenCard.type === againstCard.resist) {
+      chosenAttack = chosenAttack / 2
     }
 
-    return result;
+   const hpResult = againstCard.hp - chosenAttack
+   if (hpResult <= 0) {
+    return true
+   }
+   return false
   }
 }

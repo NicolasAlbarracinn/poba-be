@@ -52,7 +52,6 @@ export class CardController {
 
   @Patch()
   async updateCard(@Body() dto: UpdateCardDto, @Req() req: any) {
-    console.log('acaa', req.session);
     const userId = req.session.user.id;
     if (!userId) {
       throw new UnauthorizedException('User not authenticated');
